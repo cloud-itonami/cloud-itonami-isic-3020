@@ -1,0 +1,11 @@
+{:itonami.blueprint/id "cloud-itonami-3020"
+ :itonami.blueprint/name "Community Railway Rolling Stock Manufacturing"
+ :itonami.blueprint/isic-rev5 "3020"
+ :itonami.blueprint/domain :manufacturing/railway-rolling-stock
+ :itonami.blueprint/license "AGPL-3.0-or-later"
+ :itonami.blueprint/social-impact [:rail-safety :supply-resilience :decarbonization]
+ :itonami.blueprint/governor :rolling-stock-manufacturing-governor
+ :itonami.blueprint/robotics true
+ :itonami.blueprint/required-technologies [:robotics :identity :forms :dmn :bpmn :audit-ledger :eda :cae]
+ :itonami.blueprint/optional-technologies []
+ :itonami.blueprint/status :public-oss}
