@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community Railway Rolling Stock Manufacturing | cloud-itonami-isic-3020</title>
+  <meta name="description" content="Community Railway Rolling Stock Manufacturing — governed open occupation blueprint (ISIC 3020).">
+  <style>
+    :root { --bg:#f5f7fa; --card:#fff; --fg:#1b1f24; --muted:#57606a; --accent:#1e3a8a; --line:#d0d7de; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --card:#161b22; --fg:#e6edf3; --muted:#8d96a0; --accent:#58a6ff; --line:#30363d; }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, var(--bg), #c3cfe2);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; color: var(--fg); }
+    .container { max-width: 800px; width: 100%; background: var(--card); border-radius: 12px;
+                 box-shadow: 0 10px 40px rgba(0,0,0,.1); padding: 48px 40px; border: 1px solid var(--line); }
+    h1 { font-size: 1.85rem; color: var(--accent); margin-bottom: 8px; }
+    .badge { display: inline-block; background: #e0e7ff; color: var(--accent); padding: 3px 10px;
+             border-radius: 4px; font-size: .85rem; font-weight: 600; margin-bottom: 20px; }
+    @media (prefers-color-scheme: dark) { .badge { background: #1f2a44; } }
+    .pitch { border-left: 4px solid var(--accent); padding-left: 16px; margin: 20px 0 28px; color: var(--muted); line-height: 1.7; }
+    .pitch p { margin-bottom: 10px; }
+    .meta { font-size: .9rem; color: var(--muted); margin-bottom: 24px; }
+    .meta code { background: var(--bg); padding: 1px 6px; border-radius: 4px; }
+    .cta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+    @media (max-width: 560px) { .cta { grid-template-columns: 1fr; } }
+    .cta a { display: block; text-align: center; text-decoration: none; padding: 14px 18px;
+             border-radius: 8px; font-weight: 600; }
+    .cta .primary { background: var(--accent); color: #fff; }
+    .cta .secondary { border: 1.5px solid var(--accent); color: var(--accent); }
+    ul.links { list-style: none; font-size: .95rem; }
+    ul.links li { margin: 8px 0; }
+    a { color: var(--accent); }
+    footer { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--line);
+             font-size: .85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Community Railway Rolling Stock Manufacturing</h1>
+    <div class="badge">ISIC 3020 · maturity unknown</div>
+    <div class="pitch">
+      <p>Open Business Blueprint for ISIC Rev.5 3020: manufacture of railway locomotives and rolling stock.</p>
+      <p>This repository designs a forkable OSS business for community rolling-stock manufacturing: design-authority and type-approval-scope management, robotics-assisted fabrication, welding and inspection of locomotives/wagons/carriages, and production/quality records — run by a qualified manufacturer so a rolling-stock builder keeps its own design-approval and inspection history instead of renting a closed manufacturing-execution platform.</p>
+      <p>cloud-itonami-isic-4911 (passenger rail) and cloud-itonami-isic- 4912 (freight rail) are rail OPERATORS -- their own docs mention &quot;rolling-stock maintenance&quot; only as an OPERATOR'S OWN upkeep of vehicles it already owns and runs in service, never as manufacturing new rolling stock. This repository is deliberately scoped to the SEPARATE business of BUILDING locomotives and rolling stock: a manufacturer whose product must pass its own type-approval/design- authority regime before any operator can run it in service (the EU's Technical Specifications for Interoperability under Directive (EU) 2016/797; Japan's 鉄道車両の設計認可 rolling-stock design authorization under the Railway Business Act, distinct from the mvatek operator-facing 鉄道事業法 licensing that governs 4911/4912; the US FRA's rolling-stock approval under 49 CFR Parts 238/239). A rolling-stock manufacturer sells to MULTIPLE rail operators and never itself operates a rail service.</p>
+    </div>
+    <p class="meta">Domain <code>manufacturing/railway-rolling-stock</code> · Governor <code>rolling-stock-manufacturing-governor</code> · License <code>AGPL-3.0-or-later</code></p>
+    <div class="cta">
+      <a class="primary" href="https://itonami.cloud/isco-1212/">Fork + self-host claim</a>
+      <a class="secondary" href="https://itonami.cloud/docs/go-live.md">Paid go-live path</a>
+    </div>
+    <ul class="links">
+      <li><a href="https://github.com/cloud-itonami/cloud-itonami-isic-3020">GitHub repository</a></li>
+      <li><a href="./operator-quickstart.md">Operator quickstart</a></li>
+      <li><a href="https://github.com/cloud-itonami/cloud-itonami-isic-3020/blob/main/blueprint.edn">blueprint.edn</a></li>
+      <li><a href="https://github.com/cloud-itonami/cloud-itonami-isic-3020/blob/main/README.md">README</a></li>
+    </ul>
+    <footer>
+      <p>Open occupation blueprint — no invented usage or revenue metrics. Product face generated for impl-product maturity (Lane C).</p>
+    </footer>
+  </main>
+</body>
+</html>
