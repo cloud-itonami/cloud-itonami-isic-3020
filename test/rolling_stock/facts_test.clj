@@ -11,7 +11,22 @@
   (is (contains? facts/catalog :USA)
     "Should have USA jurisdiction")
   (is (contains? facts/catalog :GBR)
-    "Should have UK jurisdiction"))
+    "Should have UK jurisdiction")
+  (is (contains? facts/catalog :FRA)
+    "Should have France jurisdiction"))
+
+(deftest fra-requirements
+  "France has a real but honestly narrower requirement set than
+  JPN/USA/GBR -- vehicle-authorization only."
+  (let [reqs (facts/requirement-citations :FRA)]
+    (is (pos? (count reqs))
+      "France should have requirements")
+    (is (contains? reqs :vehicle-authorization)
+      "Should require EPSF/ERA vehicle authorization")
+    (is (not (contains? reqs :structural-integrity))
+      "Should NOT claim a structural-integrity requirement that was not verified")
+    (is (every? :spec-basis (vals reqs))
+      "Every requirement should have an official spec-basis citation")))
 
 (deftest japan-requirements
   "Japan rolling-stock manufacturing requirements are properly specified."
