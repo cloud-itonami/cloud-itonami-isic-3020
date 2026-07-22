@@ -1,14 +1,27 @@
 (ns rolling-stock.store
   "In-memory store for rolling-stock manufacturing operations state.
   This is a reference implementation; production systems would use Datomic
-  or similar persistent event store for audit and replay.")
+  or similar persistent event store for audit and replay.
+
+  PRIOR GAP (fixed here): this store had no append-only audit ledger at
+  all -- `rolling-stock.governor/evaluate` never wrote anything anywhere,
+  because nothing in this repo ever called it from a real commit/hold
+  path (there was no `operation.cljc`, no compiled StateGraph;
+  `rolling-stock.sim` just printed governor verdicts to stdout and
+  discarded them). `ledger`/`append-ledger!` below are the missing
+  plumbing: `:ledger` is a second atom alongside `:data`, and
+  `rolling-stock.operation/build`'s compiled graph's `:commit`/`:hold`
+  node handlers are the ONLY real callers of `append-ledger!` -- every
+  committed/held decision fact this actor ever makes lands here.")
 
 ;; ----------------------------- store initialization -----------------------------
 
 (defn mem-store
-  "Create an in-memory store with reference rolling-stock manufacturing data."
+  "Create an in-memory store with reference rolling-stock manufacturing
+  data, plus an empty append-only audit ledger (`:ledger`)."
   []
-  {:data (atom {
+  {:ledger (atom [])
+   :data (atom {
            :units {
              "unit-001" {:type :locomotive-frame
                         :line-id "mainline-2026-07"
@@ -79,3 +92,21 @@
   [st defect-id]
   (let [d (defect-entry st defect-id)]
     (:safety-critical? d false)))
+
+;; ----------------------------- audit ledger -----------------------------
+
+(defn ledger
+  "The append-only audit ledger: every committed/held/approval-rejected
+  decision fact this actor's compiled StateGraph has ever recorded, in
+  append order."
+  [st]
+  @(:ledger st))
+
+(defn append-ledger!
+  "Append one immutable decision fact to the ledger. Returns `fact`. THIS
+  is the call `rolling-stock.operation/build`'s compiled StateGraph's
+  `:commit`/`:hold` node handlers make -- the actor's real, previously
+  entirely-missing durable write path."
+  [st fact]
+  (swap! (:ledger st) conj fact)
+  fact)

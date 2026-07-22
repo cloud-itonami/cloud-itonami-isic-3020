@@ -8,4 +8,54 @@
  :itonami.blueprint/robotics true
  :itonami.blueprint/required-technologies [:robotics :identity :forms :dmn :bpmn :audit-ledger :eda :cae]
  :itonami.blueprint/optional-technologies []
- :itonami.blueprint/status :public-oss}
+ :itonami.blueprint/status :public-oss
+ :itonami.blueprint/maturity :implemented
+ :itonami.blueprint/implemented-slice
+ "RollingStockAdvisor ⊣ Rolling Stock Manufacturing Governor,
+ langgraph-clj StateGraph (langgraph.graph,
+ rolling-stock.operation/build), append-only audit ledger
+ (rolling-stock.store/ledger + append-ledger!, mem-store). Fixes a prior
+ gap: `rolling-stock.sim` hand-wired the advisor's four proposal
+ functions straight into `governor/evaluate` and printed the verdict to
+ stdout -- no `operation.cljc`, no `langgraph.graph` state-graph/
+ add-node/compile-graph call anywhere in `src/`, and no append-only
+ ledger on the store at all -- despite `deps.edn` correctly declaring
+ real `io.github.com-junkawasaki/langgraph-clj` (with a real `:git/sha`)
+ at the top level. Now: a genuinely compiled StateGraph (`:intake ->
+ :advise -> :govern -> :decide -+-> :commit / :request-approval ->
+ :commit / :hold`) with `interrupt-before #{:request-approval}` + an
+ in-memory checkpointer for real human-in-the-loop resume, mirroring
+ `pastaops.operation` (cloud-itonami-isic-1074) node/edge structure. The
+ advisor (`rolling-stock.advisor`) stays PLAIN FUNCTIONS (not a
+ `defprotocol` -- wiring it into a real graph node did not require one);
+ `advisor/propose` is the new dispatch seam `build`'s `:advisor` opt
+ accepts (a plain 1-arg fn of request -> proposal), swappable for a real
+ LLM backend or a test double. Four closed-vocabulary ops
+ (`:log-production-record` / `:schedule-maintenance` /
+ `:flag-safety-defect` / `:request-release-review`), all `:effect
+ :propose` only. `:flag-safety-defect` ALWAYS escalates to a human QC
+ inspector via the compiled graph's `:request-approval` node
+ (checkpoint-based resume) unless a HARD governor violation (e.g. a
+ safety-critical defect, or process-control-forbidden language) blocks
+ it before the escalate branch is ever reached. Proven end-to-end by
+ `test/rolling_stock/operation_graph_test.clj` exercising commit /
+ hard-hold (unverified unit; critical-defect hard-block that pre-empts
+ what would otherwise be an always-escalate op) / escalate-approve /
+ escalate-reject through the REAL compiled graph, including a falsifiable
+ proof that a custom injected advisor's own (randomly generated,
+ non-hardcoded) proposal `:detail` is what lands in the committed
+ ledger fact -- not a graph-internal literal. `rolling-stock.store` now
+ also exposes an append-only `:ledger` atom (`ledger`/`append-ledger!`)
+ alongside its original `:data` value helpers (unchanged). Observed but
+ OUT OF SCOPE for this fix: `rolling-stock.governor`'s
+ `release-forbidden-violations` / `process-control-block-violations`
+ keyword scans match on bare substrings of the op vocabulary itself
+ (e.g. \"release\" inside `:request-release-review`'s own proposal text,
+ \"weld\" inside a safety-critical defect's own description) -- this
+ makes `:request-release-review` permanently hard-blocked through the
+ mock advisor's own wording, and adds a second (redundant but
+ non-contradicting) hard violation alongside the intended
+ `:safety-defect-escalation` block for critical defects. Governor logic
+ was reused unchanged per this fix's scope; this is a pre-existing
+ governor characteristic, not introduced here, and is called out for a
+ follow-up rather than silently patched."}
