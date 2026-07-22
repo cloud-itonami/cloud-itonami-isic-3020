@@ -13,7 +13,9 @@
   (is (contains? facts/catalog :GBR)
     "Should have UK jurisdiction")
   (is (contains? facts/catalog :FRA)
-    "Should have France jurisdiction"))
+    "Should have France jurisdiction")
+  (is (contains? facts/catalog :DEU)
+    "Should have Germany jurisdiction"))
 
 (deftest fra-requirements
   "France has a real but honestly narrower requirement set than
@@ -27,6 +29,36 @@
       "Should NOT claim a structural-integrity requirement that was not verified")
     (is (every? :spec-basis (vals reqs))
       "Every requirement should have an official spec-basis citation")))
+
+(deftest deu-requirements
+  "Germany has a real but honestly narrower requirement set than
+  JPN/USA/GBR -- vehicle-authorization (initial acceptance) and
+  periodic-inspection only, per EBO §§ 3 and 32."
+  (let [reqs (facts/requirement-citations :DEU)]
+    (is (pos? (count reqs))
+      "Germany should have requirements")
+    (is (contains? reqs :vehicle-authorization)
+      "Should require EBA/Land-authority vehicle acceptance")
+    (is (contains? reqs :periodic-inspection)
+      "Should require periodic recurring inspection")
+    (is (not (contains? reqs :structural-integrity))
+      "Should NOT claim a structural-integrity requirement that was not verified")
+    (is (not (contains? reqs :braking-system))
+      "Should NOT claim a braking-system requirement that was not verified")
+    (is (every? :spec-basis (vals reqs))
+      "Every requirement should have an official spec-basis citation")))
+
+(deftest deu-evidence-satisfaction
+  "Evidence checklist validation works correctly for Germany."
+  (let [good-checklist {:eba-or-land-authority-acceptance true
+                        :vehicle-acceptance-cert true
+                        :periodic-inspection-record true
+                        :inspection-interval-compliance true}
+        bad-checklist {:eba-or-land-authority-acceptance true}]
+    (is (facts/required-evidence-satisfied? :DEU good-checklist)
+      "Should accept complete evidence checklist")
+    (is (not (facts/required-evidence-satisfied? :DEU bad-checklist))
+      "Should reject incomplete evidence checklist")))
 
 (deftest japan-requirements
   "Japan rolling-stock manufacturing requirements are properly specified."
