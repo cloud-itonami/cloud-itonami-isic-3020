@@ -15,7 +15,9 @@
   (is (contains? facts/catalog :FRA)
     "Should have France jurisdiction")
   (is (contains? facts/catalog :DEU)
-    "Should have Germany jurisdiction"))
+    "Should have Germany jurisdiction")
+  (is (contains? facts/catalog :KOR)
+    "Should have South Korea jurisdiction"))
 
 (deftest fra-requirements
   "France has a real but honestly narrower requirement set than
@@ -58,6 +60,37 @@
     (is (facts/required-evidence-satisfied? :DEU good-checklist)
       "Should accept complete evidence checklist")
     (is (not (facts/required-evidence-satisfied? :DEU bad-checklist))
+      "Should reject incomplete evidence checklist")))
+
+(deftest kor-requirements
+  "South Korea has a real but honestly narrower requirement set than
+  JPN/USA/GBR -- design type-approval and completion inspection only,
+  per Railroad Safety Act (철도안전법) Articles 26 and 26-6."
+  (let [reqs (facts/requirement-citations :KOR)]
+    (is (pos? (count reqs))
+      "South Korea should have requirements")
+    (is (contains? reqs :vehicle-authorization)
+      "Should require MOLIT/TS rolling-stock type approval")
+    (is (contains? reqs :completion-inspection)
+      "Should require post-manufacture completion inspection")
+    (is (not (contains? reqs :structural-integrity))
+      "Should NOT claim a structural-integrity requirement that was not verified")
+    (is (not (contains? reqs :braking-system))
+      "Should NOT claim a braking-system requirement that was not verified")
+    (is (every? :spec-basis (vals reqs))
+      "Every requirement should have an official spec-basis citation")))
+
+(deftest kor-evidence-satisfaction
+  "Evidence checklist validation works correctly for South Korea."
+  (let [good-checklist {:molit-type-approval true
+                        :ts-type-approval-inspection true
+                        :technical-standards-compliance true
+                        :completion-inspection-cert true
+                        :type-approval-conformance true}
+        bad-checklist {:molit-type-approval true}]
+    (is (facts/required-evidence-satisfied? :KOR good-checklist)
+      "Should accept complete evidence checklist")
+    (is (not (facts/required-evidence-satisfied? :KOR bad-checklist))
       "Should reject incomplete evidence checklist")))
 
 (deftest japan-requirements

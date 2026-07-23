@@ -18,6 +18,15 @@
   restate those as independently-citable sub-standards the way JPN/USA/GBR's
   entries do.
 
+  :KOR is likewise scoped narrower than JPN/USA/GBR -- design type-approval
+  and post-manufacture completion inspection are verified and included;
+  structural-integrity/braking-system/electrical-safety are honestly absent
+  because Article 26(3) of the Railroad Safety Act (철도안전법) itself routes
+  the technical standards for rolling stock to a separately published
+  Ministerial notification (고시) that this iteration did not fetch, rather
+  than restating them as independently-citable sub-standards within the Act
+  the way JPN/USA/GBR's entries do (same honest-absence pattern as :FRA/:DEU).
+
   This is deliberately a starting catalog (honest coverage reporting) to
   prove the governor contract end-to-end, not a claim of global coverage.
   Adding a jurisdiction is additive: one map entry citing a real official
@@ -128,7 +137,39 @@
      :periodic-inspection {:description "Vehicles must be inspected periodically as scheduled (\"planmäßig wiederkehrend\"); absent other maintenance-body requirements, an inspection is required at least every six years (extendable up to eight years if the vehicle's condition permits), and records of each inspection must be kept"
                            :required true
                            :spec-basis "Eisenbahn-Bau- und Betriebsordnung (EBO) § 32 Abs. 2-4 (\"Die Fahrzeuge sind planmäßig wiederkehrend zu untersuchen ... soll eine Untersuchung mindestens alle sechs Jahre durchgeführt werden ... Über die Untersuchungen der Fahrzeuge sind Nachweise zu führen.\") -- confirmed directly on gesetze-im-internet.de"
-                           :evidence [:periodic-inspection-record :inspection-interval-compliance]}}}})
+                           :evidence [:periodic-inspection-record :inspection-interval-compliance]}}}
+
+   ;; South Korea -- WebFetch/curl-verified 2026-07-23 directly against
+   ;; elaw.klri.re.kr (the Korea Legislation Research Institute's official
+   ;; English statute-translation portal; Railroad Safety Act / 철도안전법,
+   ;; hseq=55943, via /eng_service/lawViewContent.do?hseq=55943#<joSeq>) and
+   ;; main.kotsa.or.kr (한국교통안전공단, TS / Korea Transportation Safety
+   ;; Authority, the government-designated inspection body's own site).
+   ;; Deliberately scoped to TWO requirements (design type-approval, and
+   ;; post-manufacture completion inspection) rather than force-matching
+   ;; JPN/USA/GBR's more granular structural/braking/electrical breakdown --
+   ;; Article 26(3) itself routes the technical standards for rolling stock
+   ;; to a separately published Ministerial notification (고시) that this
+   ;; iteration did not fetch, so honestly left out rather than guessed by
+   ;; analogy (same pattern as :FRA/:DEU). Note: the elaw.klri.re.kr English
+   ;; translation reflects amendments through Act No. 17746 (Dec. 22, 2020)
+   ;; and carries KLRI's own disclaimer that it is "for reference only, and
+   ;; [is] neither official nor legally effective"; this iteration did not
+   ;; independently check for post-2020 Korean-only amendments to Articles
+   ;; 26/26-6 specifically, and lbox.kr (an alternate Korean statute mirror)
+   ;; returned HTTP 403 rather than a bot-detection challenge, so it was left
+   ;; unreachable rather than probed further.
+   :KOR
+   {:name "South Korea"
+    :requirements
+    {:vehicle-authorization {:description "A person who intends to manufacture or import rolling stock to be operated domestically must obtain type approval for the rolling stock's design from the Minister of Land, Infrastructure and Transport (MOLIT, 국토교통부); granting type approval (or approval for a later design modification) requires MOLIT to conduct an inspection for type approval verifying the rolling stock meets the technical standards for rolling stock prescribed and publicly notified by MOLIT, and operating rolling stock without this type approval is prohibited. MOLIT entrusts this type-approval inspection to the Korea Transportation Safety Authority (TS, 한국교통안전공단), which performs it through its Railroad Approval Division (철도승인처)"
+                             :required true
+                             :spec-basis "Railroad Safety Act (철도안전법) Article 26 (Type Approval for Rolling Stock) paragraphs (1), (3) and (5) (\"A person who intends to manufacture or import rolling stock to be operated domestically shall obtain type approval for a design for the relevant rolling stock from the Minister of Land, Infrastructure and Transport, as prescribed by Ministerial Decree of Land, Infrastructure and Transport. ... Where the Minister of Land, Infrastructure and Transport grants type approval under paragraph (1) ..., he or she shall conduct an inspection for type approval, to verify whether the relevant rolling stock meets the technical standards for rolling stock prescribed and publicly notified by the Minister of Land, Infrastructure and Transport. ... No person shall operate rolling track without obtaining type approval under paragraph (1).\"); entrustment of this inspection to TS confirmed via Article 27-3 (Entrustment of Inspection Affairs) of the same Act and independently via TS's own site citing \"철도안전법 제26조(철도차량 형식승인), 제27조(철도용품 형식승인) 및 동법 시행령 제28조의2(검사업무의 위탁)\" as its legal basis -- confirmed directly on elaw.klri.re.kr (hseq=55943) and main.kotsa.or.kr"
+                             :evidence [:molit-type-approval :ts-type-approval-inspection :technical-standards-compliance]}
+     :completion-inspection {:description "A manufacturer approved under Article 26-3 (Approval of Manufacturers of Rolling Stock) must undergo a completion inspection, executed by MOLIT, verifying that the rolling stock as actually manufactured conforms to the type approval obtained under Article 26; MOLIT issues a certificate of completion inspection once the rolling stock passes"
+                             :required true
+                             :spec-basis "Railroad Safety Act (철도안전법) Article 26-6 (Completion Inspection of Rolling Stock) paragraphs (1)-(2) (\"A person who has obtained approval as a manufacturer pursuant to Article 26-3 shall undergo a completion inspection executed by the Minister of Land, Infrastructure and Transport to verify whether the relevant rolling stock has been manufactured in accordance with the type approval obtained under Article 26. ... Where rolling stock has passed the completion inspection pursuant to paragraph (1), the Minister of Land, Infrastructure and Transport shall issue a certificate of completion inspection for rolling stock prescribed by Ministerial Decree of Land, Infrastructure and Transport to a manufacturer of rolling stock.\") -- confirmed directly on elaw.klri.re.kr (hseq=55943)"
+                             :evidence [:completion-inspection-cert :type-approval-conformance]}}}})
 
 ;; ----------------------------- coverage reporting (honest) -----------------------------
 
