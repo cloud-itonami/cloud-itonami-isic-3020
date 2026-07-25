@@ -2,8 +2,7 @@
   (:require [clojure.test :refer [deftest is]]
             [rolling-stock.facts :as facts]))
 
-(deftest catalog-exists
-  "Catalog has entry for each implemented jurisdiction."
+(deftest ^{:doc "Catalog has entry for each implemented jurisdiction."} catalog-exists
   (is (pos? (count facts/catalog))
     "Catalog should not be empty")
   (is (contains? facts/catalog :JPN)
@@ -19,9 +18,8 @@
   (is (contains? facts/catalog :KOR)
     "Should have South Korea jurisdiction"))
 
-(deftest fra-requirements
-  "France has a real but honestly narrower requirement set than
-  JPN/USA/GBR -- vehicle-authorization only."
+(deftest ^{:doc "France has a real but honestly narrower requirement set than
+  JPN/USA/GBR -- vehicle-authorization only."} fra-requirements
   (let [reqs (facts/requirement-citations :FRA)]
     (is (pos? (count reqs))
       "France should have requirements")
@@ -32,10 +30,9 @@
     (is (every? :spec-basis (vals reqs))
       "Every requirement should have an official spec-basis citation")))
 
-(deftest deu-requirements
-  "Germany has a real but honestly narrower requirement set than
+(deftest ^{:doc "Germany has a real but honestly narrower requirement set than
   JPN/USA/GBR -- vehicle-authorization (initial acceptance) and
-  periodic-inspection only, per EBO §§ 3 and 32."
+  periodic-inspection only, per EBO §§ 3 and 32."} deu-requirements
   (let [reqs (facts/requirement-citations :DEU)]
     (is (pos? (count reqs))
       "Germany should have requirements")
@@ -50,8 +47,7 @@
     (is (every? :spec-basis (vals reqs))
       "Every requirement should have an official spec-basis citation")))
 
-(deftest deu-evidence-satisfaction
-  "Evidence checklist validation works correctly for Germany."
+(deftest ^{:doc "Evidence checklist validation works correctly for Germany."} deu-evidence-satisfaction
   (let [good-checklist {:eba-or-land-authority-acceptance true
                         :vehicle-acceptance-cert true
                         :periodic-inspection-record true
@@ -62,10 +58,9 @@
     (is (not (facts/required-evidence-satisfied? :DEU bad-checklist))
       "Should reject incomplete evidence checklist")))
 
-(deftest kor-requirements
-  "South Korea has a real but honestly narrower requirement set than
+(deftest ^{:doc "South Korea has a real but honestly narrower requirement set than
   JPN/USA/GBR -- design type-approval and completion inspection only,
-  per Railroad Safety Act (철도안전법) Articles 26 and 26-6."
+  per Railroad Safety Act (철도안전법) Articles 26 and 26-6."} kor-requirements
   (let [reqs (facts/requirement-citations :KOR)]
     (is (pos? (count reqs))
       "South Korea should have requirements")
@@ -80,8 +75,7 @@
     (is (every? :spec-basis (vals reqs))
       "Every requirement should have an official spec-basis citation")))
 
-(deftest kor-evidence-satisfaction
-  "Evidence checklist validation works correctly for South Korea."
+(deftest ^{:doc "Evidence checklist validation works correctly for South Korea."} kor-evidence-satisfaction
   (let [good-checklist {:molit-type-approval true
                         :ts-type-approval-inspection true
                         :technical-standards-compliance true
@@ -93,8 +87,7 @@
     (is (not (facts/required-evidence-satisfied? :KOR bad-checklist))
       "Should reject incomplete evidence checklist")))
 
-(deftest japan-requirements
-  "Japan rolling-stock manufacturing requirements are properly specified."
+(deftest ^{:doc "Japan rolling-stock manufacturing requirements are properly specified."} japan-requirements
   (let [reqs (facts/requirement-citations :JPN)]
     (is (pos? (count reqs))
       "Japan should have requirements")
@@ -107,8 +100,7 @@
     (is (contains? reqs :wheel-and-axle)
       "Should require wheel and axle standards")))
 
-(deftest evidence-satisfaction
-  "Evidence checklist validation works correctly."
+(deftest ^{:doc "Evidence checklist validation works correctly."} evidence-satisfaction
   (let [good-checklist {:weld-inspection-cert true
                         :frame-stress-analysis true
                         :material-cert true
@@ -127,8 +119,7 @@
     (is (not (facts/required-evidence-satisfied? :JPN bad-checklist))
       "Should reject incomplete evidence checklist")))
 
-(deftest coverage-reporting
-  "Coverage report provides honest jurisdictional scope."
+(deftest ^{:doc "Coverage report provides honest jurisdictional scope."} coverage-reporting
   (let [cov (facts/coverage)]
     (is (pos? (:implemented cov))
       "Should report implementation count")
@@ -141,14 +132,12 @@
     (is (string? (:note cov))
       "Should include scope note")))
 
-(deftest requirement-spec-basis
-  "Each jurisdiction's requirements cite official spec-basis."
+(deftest ^{:doc "Each jurisdiction's requirements cite official spec-basis."} requirement-spec-basis
   (doseq [[jurisdiction reqs] (facts/requirement-citations :JPN)]
     (is (:spec-basis reqs)
       (str "Requirement " jurisdiction " should have spec-basis"))))
 
-(deftest usa-requirements
-  "USA rolling-stock manufacturing requirements are properly specified."
+(deftest ^{:doc "USA rolling-stock manufacturing requirements are properly specified."} usa-requirements
   (let [reqs (facts/requirement-citations :USA)]
     (is (pos? (count reqs))
       "USA should have requirements")
@@ -157,8 +146,7 @@
     (is (string? (get-in reqs [:braking-system :spec-basis]))
       "Should cite FRA standards for braking")))
 
-(deftest gbr-requirements
-  "UK rolling-stock manufacturing requirements are properly specified."
+(deftest ^{:doc "UK rolling-stock manufacturing requirements are properly specified."} gbr-requirements
   (let [reqs (facts/requirement-citations :GBR)]
     (is (pos? (count reqs))
       "UK should have requirements")
