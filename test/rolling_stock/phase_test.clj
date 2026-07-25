@@ -2,8 +2,7 @@
   (:require [clojure.test :refer [deftest is]]
             [rolling-stock.phase :as phase]))
 
-(deftest phase-table-exists
-  "Phase table is properly defined."
+(deftest ^{:doc "Phase table is properly defined."} phase-table-exists
   (is (map? phase/phase-table)
     "Phase table should be a map")
   (is (contains? phase/phase-table :start)
@@ -15,13 +14,11 @@
   (is (contains? phase/phase-table :output-node)
     "Phase table should have :output-node"))
 
-(deftest start-node-correct
-  "Start node is ADVISOR-NODE."
+(deftest ^{:doc "Start node is ADVISOR-NODE."} start-node-correct
   (is (= (phase/starting-node) phase/ADVISOR-NODE)
     "Starting node should be ADVISOR-NODE"))
 
-(deftest nodes-defined
-  "All expected nodes are defined in phase table."
+(deftest ^{:doc "All expected nodes are defined in phase table."} nodes-defined
   (let [nodes (get phase/phase-table :nodes)]
     (is (contains? nodes phase/ADVISOR-NODE)
       "ADVISOR-NODE should be defined")
@@ -32,8 +29,7 @@
     (is (contains? nodes phase/COMPLETE-NODE)
       "COMPLETE-NODE should be defined")))
 
-(deftest terminal-nodes
-  "Terminal nodes are correctly identified."
+(deftest ^{:doc "Terminal nodes are correctly identified."} terminal-nodes
   (is (phase/is-terminal? phase/HOLD-NODE)
     "HOLD-NODE should be terminal")
   (is (phase/is-terminal? phase/COMPLETE-NODE)
@@ -43,8 +39,7 @@
   (is (not (phase/is-terminal? phase/GOVERNOR-NODE))
     "GOVERNOR-NODE should not be terminal"))
 
-(deftest edges-defined
-  "Phase edges define the workflow graph."
+(deftest ^{:doc "Phase edges define the workflow graph."} edges-defined
   (let [edges (get phase/phase-table :edges)]
     (is (seq edges)
       "Edges should not be empty")
@@ -55,7 +50,6 @@
              edges)
       "GOVERNOR-NODE should have outgoing edges")))
 
-(deftest output-node-complete
-  "Output node is COMPLETE-NODE."
+(deftest ^{:doc "Output node is COMPLETE-NODE."} output-node-complete
   (is (= (get phase/phase-table :output-node) phase/COMPLETE-NODE)
     "Output node should be COMPLETE-NODE"))

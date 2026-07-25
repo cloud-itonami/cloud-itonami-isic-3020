@@ -5,8 +5,7 @@
             [rolling-stock.governor :as governor]
             [rolling-stock.registry :as registry]))
 
-(deftest spec-basis-hard-gate
-  "Spec-basis is a HARD gate: never allow proposals without official citations."
+(deftest ^{:doc "Spec-basis is a HARD gate: never allow proposals without official citations."} spec-basis-hard-gate
   (let [st (store/mem-store)
         proposal {:op :log-production-record
                   :subject "unit-001"
@@ -19,9 +18,8 @@
       (is (seq (:hard-violations eval)) "Should have hard violations")
       (is (some #(= (:rule %) :no-spec-basis) (:hard-violations eval))))))
 
-(deftest release-forbidden-block
-  "HARD BLOCK: Proposals claiming to release or certify vehicles are immediately rejected.
-  Release and safety certification are engineer exclusive authority."
+(deftest ^{:doc "HARD BLOCK: Proposals claiming to release or certify vehicles are immediately rejected.
+  Release and safety certification are engineer exclusive authority."} release-forbidden-block
   (let [st (store/mem-store)
         proposal {:op :log-production-record
                   :subject "unit-001"
@@ -35,9 +33,8 @@
       (is (some #(= (:rule %) :release-forbidden) (:hard-violations eval))
         "Should have release-forbidden violation"))))
 
-(deftest process-control-block
-  "HARD BLOCK: Proposals mentioning welding, assembly, or engineering decisions
-  are immediately rejected. Those remain specialist/engineer exclusive authority."
+(deftest ^{:doc "HARD BLOCK: Proposals mentioning welding, assembly, or engineering decisions
+  are immediately rejected. Those remain specialist/engineer exclusive authority."} process-control-block
   (let [st (store/mem-store)
         proposal {:op :log-production-record
                   :subject "unit-001"
@@ -51,9 +48,8 @@
       (is (some #(= (:rule %) :process-control-forbidden) (:hard-violations eval))
         "Should have process-control-forbidden violation"))))
 
-(deftest safety-defect-escalation
-  "Safety-critical manufacturing defects ALWAYS escalate to human.
-  Never silently log a safety-critical defect."
+(deftest ^{:doc "Safety-critical manufacturing defects ALWAYS escalate to human.
+  Never silently log a safety-critical defect."} safety-defect-escalation
   (let [st (store/mem-store)
         proposal {:op :flag-safety-defect
                   :subject "defect-001"
@@ -68,8 +64,7 @@
       (is (some #(= (:rule %) :safety-defect-escalation) (:hard-violations eval))
         "Should have safety-defect-escalation violation"))))
 
-(deftest flag-defect-without-safety-critical
-  "Non-critical defects may escalate on confidence, but not hard-blocked."
+(deftest ^{:doc "Non-critical defects may escalate on confidence, but not hard-blocked."} flag-defect-without-safety-critical
   (let [st (store/mem-store)
         proposal {:op :flag-safety-defect
                   :subject "defect-002"
@@ -83,8 +78,7 @@
       (is (not (:holds? eval)) "Non-critical defect should not hard-block")
       (is (seq (:soft-violations eval)) "Should have soft violations on confidence gate"))))
 
-(deftest unit-not-verified-blocks-record
-  "Production-record logging with unverified unit is blocked."
+(deftest ^{:doc "Production-record logging with unverified unit is blocked."} unit-not-verified-blocks-record
   (let [st (store/mem-store)
         proposal (registry/production-record-draft "unit-002"
                    ["Railway Technical Standards §4.2"]
@@ -96,8 +90,7 @@
       (is (some #(= (:rule %) :unit-not-verified) (:hard-violations eval))
         "Should block unverified unit"))))
 
-(deftest safety-defect-always-escalates
-  "Safety defect flagging always escalates to human, regardless of confidence."
+(deftest ^{:doc "Safety defect flagging always escalates to human, regardless of confidence."} safety-defect-always-escalates
   (let [st (store/mem-store)
         proposal {:op :flag-safety-defect
                   :subject "defect-001"
@@ -112,9 +105,8 @@
       (is (some #(= (:rule %) :escalate) (:soft-violations eval))
         "Should always escalate safety defect"))))
 
-(deftest clean-production-record
-  "A proposal with all evidence, valid spec-basis, high confidence,
-  and no safety defects is clean."
+(deftest ^{:doc "A proposal with all evidence, valid spec-basis, high confidence,
+  and no safety defects is clean."} clean-production-record
   (let [st (store/mem-store)
         proposal {:op :log-production-record
                   :subject "unit-001"
@@ -127,8 +119,7 @@
       (is (:clean? eval) "Should be clean")
       (is (empty? (:hard-violations eval)) "Should have no hard violations"))))
 
-(deftest maintenance-proposal-clean
-  "Routine maintenance proposal with verified equipment and high confidence is clean."
+(deftest ^{:doc "Routine maintenance proposal with verified equipment and high confidence is clean."} maintenance-proposal-clean
   (let [st (store/mem-store)
         proposal {:op :schedule-maintenance
                   :subject "equipment-001"
