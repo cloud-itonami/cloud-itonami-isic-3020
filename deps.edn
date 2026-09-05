@@ -3,7 +3,10 @@
  ;; all .cljc -> portable to JVM / SCI / ClojureScript / GraalVM).
  ;; For monorepo workspace dev, uncomment :local/root and use :dev alias.
  ;; For standalone forks, use git coordinates to com-junkawasaki/langgraph-clj.
- :deps {io.github.com-junkawasaki/langgraph-clj
+ :deps {io.github.kotoba-lang/jp-go-digital-design-system
+        {:git/url "https://github.com/kotoba-lang/jp-go-digital-design-system"
+         :git/sha "83db99546eabc53613ae826ea41d1533a3c574af"}
+        io.github.com-junkawasaki/langgraph-clj
         {:git/url "https://github.com/com-junkawasaki/langgraph-clj.git"
          :git/sha "a332a770a0d2b5193f81b54483bb954fb29ef8d7"}}
  :aliases
