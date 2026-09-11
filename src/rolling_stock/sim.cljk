@@ -1,6 +1,6 @@
 (ns rolling-stock.sim
   "Simulation harness for the Rolling Stock Manufacturing Coordinator
-  actor. Run with: clojure -M:dev:run
+  actor. Run with: kbb -M:dev:run
 
   PRIOR BUG (fixed here): this demo used to hand-wire
   `rolling-stock.advisor`'s proposal functions straight into
@@ -85,7 +85,7 @@
     {:ledger (store/ledger st)}))
 
 (defn -main
-  "clojure -M:run entrypoint."
+  "kbb -M:run entrypoint."
   [& _args]
   (demo))
 
