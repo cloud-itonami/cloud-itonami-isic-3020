@@ -38,7 +38,7 @@
  (checkpoint-based resume) unless a HARD governor violation (e.g. a
  safety-critical defect, or process-control-forbidden language) blocks
  it before the escalate branch is ever reached. Proven end-to-end by
- `test/rolling_stock/operation_graph_test.clj` exercising commit /
+ `test/rolling_stock/operation_graph_test.cljk` exercising commit /
  hard-hold (unverified unit; critical-defect hard-block that pre-empts
  what would otherwise be an always-escalate op) / escalate-approve /
  escalate-reject through the REAL compiled graph, including a falsifiable

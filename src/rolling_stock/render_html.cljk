@@ -18,7 +18,7 @@
   `:flag-safety-defect`'s `:safety-critical?` flag is read from the
   store (`store/defect-is-safety-critical?`) instead of being asserted
   by this namespace. NOTE that `rolling-stock.sim` and
-  `test/rolling_stock/operation_graph_test.clj` both drive `defect-002`
+  `test/rolling_stock/operation_graph_test.cljk` both drive `defect-002`
   / `defect-003` / `defect-004`, none of which exist in the seed -- the
   governor's safety-defect check reads the flag off the PROPOSAL rather
   than the store, so those runs work while describing records that are
