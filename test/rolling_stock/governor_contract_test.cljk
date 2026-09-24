@@ -1,5 +1,5 @@
 (ns rolling-stock.governor-contract-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [rolling-stock.store :as store]
             [rolling-stock.advisor :as advisor]
             [rolling-stock.governor :as governor]

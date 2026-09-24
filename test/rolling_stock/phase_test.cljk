@@ -1,5 +1,5 @@
 (ns rolling-stock.phase-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [rolling-stock.phase :as phase]))
 
 (deftest ^{:doc "Phase table is properly defined."} phase-table-exists

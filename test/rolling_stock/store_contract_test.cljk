@@ -1,5 +1,5 @@
 (ns rolling-stock.store-contract-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [rolling-stock.store :as store]))
 
 (deftest ^{:doc "In-memory store initializes with reference data."} mem-store-initialization
