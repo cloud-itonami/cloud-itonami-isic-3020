@@ -29,7 +29,7 @@
        interrupt, not an immediate hold) and stays un-recorded in the
        ledger until a human QC inspector resumes the thread -- both the
        approve->commit and reject->hold branches are exercised."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [langgraph.graph :as g]
             [rolling-stock.operation :as operation]
             [rolling-stock.store :as store]))

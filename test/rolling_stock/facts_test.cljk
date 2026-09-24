@@ -1,5 +1,5 @@
 (ns rolling-stock.facts-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [rolling-stock.facts :as facts]))
 
 (deftest ^{:doc "Catalog has entry for each implemented jurisdiction."} catalog-exists
