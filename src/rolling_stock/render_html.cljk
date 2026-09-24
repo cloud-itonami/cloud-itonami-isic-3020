@@ -51,7 +51,7 @@
 
   Usage: `kbb -M:dev:render-html [out-file]`
   (default `docs/samples/operator-console.html`)."
-  (:require [kotoba.lang.text :as str]
+  (:require [kotoba.io :as kio] [kotoba.lang.text :as str]
             [langgraph.graph :as g]
             [rolling-stock.governor :as governor]
             [rolling-stock.operation :as operation]
@@ -469,8 +469,8 @@
   (let [out (or (first args) "docs/samples/operator-console.html")
         demo (run-demo!)
         html (render demo)
-        f (java.io.File. ^String out)]
-    (when-let [p (.getParentFile f)] (.mkdirs p))
+        f (kio/file ^String out)]
+    (when-let [p (kio/parent-file f)] (kio/mkdirs p))
     (spit f html)
     (println "wrote" out
              (str "(" (count (:runs demo)) " graph runs, "
