@@ -1,0 +1,46 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README "Robotics premise": welding, fabrication, assembly-line inspection
+;; and NDT-scan robots build locomotives, wagons and carriages under an actor
+;; that proposes and an independent Rolling Stock Manufacturing Governor
+;; that gates (no delivery release without a completed inspection). The
+;; physical work: tensile-testing the bogie-frame plate, stress-relieving the
+;; welded bogie frame in a furnace, and moving a car-body shell between
+;; stations on a transfer AMR.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-3020"
+ :cases
+ [{:id :bogie-plate-tensile
+   :kind :material
+   :procedure "incoming inspection: tensile test of an SM490A bogie side-beam plate specimen (<= 16 mm plate, 100 mm2 section)"
+   :params {:length-m 0.10 :area-m2 1.0e-4 :youngs-modulus-pa 206.0e9 :hardening-pa 1.0e9
+            :density-kg-m3 7850.0 :max-force-n 55000.0}
+   :sweep {:param :yield-stress-pa :values [290.0e6 315.0e6 325.0e6 350.0e6 390.0e6]}
+   :quantity :yield-force-n
+   :limit {:min 32500.0 :basis "JIS G 3106 SM490A, thickness <= 16 mm: minimum yield strength 325 N/mm2; x 100 mm2 = 32500 N"}
+   :boundary {:lo 270.0e6 :hi 420.0e6}}
+  {:id :bogie-frame-stress-relief
+   :kind :thermal
+   :procedure "welded bogie frame is stress-relieved in a furnace at 620 C; the thickest section's core must reach 580 C before the hold starts"
+   :params {:conductivity-w-mk 40.0 :density-kg-m3 7850.0 :specific-heat-j-kgk 600.0
+            :t0-c 20.0 :t-hot-c 620.0 :h-front-w-m2k 40.0 :t-back-ambient-c 620.0 :h-back-w-m2k 40.0
+            :threshold-c 580.0 :duration-s 14400.0 :nodes 9}
+   :sweep {:param :thickness-m :values [0.012 0.020 0.030 0.040 0.060]}
+   :quantity :time-to-threshold-s
+   :limit {:max 7200.0 :basis "estimate: 2-hour furnace heat-up slot per frame; the combined convection+radiation h = 40 W/m2K is also an estimate"}
+   :boundary {:lo 0.005 :hi 0.12}}
+  {:id :car-body-to-paint-shop
+   :kind :transport
+   :procedure "transfer AMR carries a welded car-body shell from the welding hall to the paint shop (120 m)"
+   :params {:mass-kg 3000.0 :distance-m 120.0 :v-max-mps 0.5 :a-max-mps2 0.10
+            :brake-decel-mps2 0.15 :drive-force-n 8000.0 :crr 0.01
+            :cog-height-m 0.5 :support-half-length-m 2.5 :payload-cog-height-m 2.2
+            :max-time-s 7200.0}
+   :sweep {:param :payload-kg :values [6000.0 9000.0 12000.0 16000.0 22000.0]}
+   :quantity :cycle-time-s
+   :limit {:max 300.0 :basis "estimate: a 5-minute station-to-station transfer inside the car-body line takt"}
+   :boundary {:lo 1000.0 :hi 90000.0}}]}
